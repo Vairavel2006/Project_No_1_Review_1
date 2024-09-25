@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #2b2d42; /* Dark background to match the main app theme */
+            color: #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .profile-container {
+            background-color: #1b4332; /* Dark green matching the wallet section */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 320px;
+        }
+
+        h1 {
+            color: #ffba08; /* Highlight color for the heading */
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        p {
+            color: #f4a261; /* Light orange color matching the bills section */
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        button {
+            background: #9d0208; /* Matching the button color from the main app */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #d00000; /* Darker shade on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <h1>User Profile</h1>
+        <p><strong>Username:</strong> <span id="profile-username"></span></p>
+        <p><strong>Email:</strong> <span id="profile-email"></span></p>
+        <p><strong>Password:</strong> <span id="profile-password"></span></p>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <script>
+        // Check if the user is logged in by checking localStorage for 'email' and 'password'
+        const email = localStorage.getItem('email');
+        const password = localStorage.getItem('password');
+
+        if (!email || !password) {
+            alert('You are not logged in. Please log in first.');
+            window.location.href = 'login.html'; // Redirect to login page if not authenticated
+        }
+
+        // Display user profile information
+        document.getElementById('profile-username').textContent = localStorage.getItem('username');
+        document.getElementById('profile-email').textContent = localStorage.getItem('email');
+        document.getElementById('profile-password').textContent = localStorage.getItem('password');
+
+        function logout() {
+            localStorage.clear(); // Clear all user data
+            alert('You have been logged out.');
+            window.location.href = 'login.html'; // Redirect to login page
+        }
+    </script>
+</body>
+</html>

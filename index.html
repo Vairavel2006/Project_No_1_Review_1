@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automated Bill Payments</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #2b2d42, #4a4e69);
+            color: #ddd;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #3a0ca3;
+            color: #fff;
+            padding: 20px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            font-weight: bold;
+            position: relative;
+        }
+
+        /* Hamburger Menu */
+        #hamburger {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            cursor: pointer;
+            font-size: 24px;
+            z-index: 1000;
+        }
+
+        .menu {
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            width: 200px;
+            background: #3a0ca3;
+            color: white;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.4);
+        }
+
+        .menu.open {
+            display: block;
+        }
+
+        .menu a {
+            display: block;
+            padding: 15px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+
+        .menu a:hover {
+            background: #5a189a;
+        }
+
+        .container {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: 90%;
+            max-width: 1200px;
+        }
+
+        .bill-form-section, .settings-section, .payments-section {
+            background: #22223b;
+            color: #ffba08;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
+
+        .bills-section {
+            background: #283618;
+            color: #f4a261;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
+
+        .wallet-section {
+            background: #1b4332;
+            color: #74c69d;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h2 {
+            margin-bottom: 15px;
+            color: #f2e9e4;
+        }
+
+        input, select, button {
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            width: 90%;
+            box-sizing: border-box;
+            font-size: 16px;
+            color: #333;
+        }
+
+        button {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .btn-add {
+            background: #9d0208;
+            color: white;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .btn-add:hover {
+            background: #d00000;
+            transform: scale(1.05);
+        }
+
+        .bill-item {
+            background: #343a40;
+            color: #fff;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .wallet-balance {
+            font-size: 48px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .wallet-balance span {
+            color: #ffba08;
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 10px;
+            background-color: #3a0ca3;
+            color: white;
+            width: 100%;
+            text-align: center;
+        }
+
+        .profile-link {
+            position: absolute;
+            right: 40px; /* Adjusted position */
+            top: 10px;  /* Slightly moved */
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .profile-link:hover {
+            background: #5a189a;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <span id="hamburger">☰</span> Automated Bill Payments
+    <span class="profile-link" onclick="goToProfile()">Profile</span>
+</div>
+
+<div class="menu" id="menu">
+    <a href="#">Dashboard</a>
+    <a href="#">Payments</a>
+    <a href="#">Settings</a>
+</div>
+
+<div class="container">
+    <div class="bill-form-section">
+        <h2>Add New Bill</h2>
+        <select id="bill-type">
+            <option value="">Select Bill Type</option>
+            <option value="Electricity">Electricity</option>
+            <option value="Water">Water</option>
+            <option value="Grocery">Grocery</option>
+            <option value="Bank Loan">Bank Loan</option>
+            <option value="Tax">Tax</option>
+            <option value="Other">Other</option>
+        </select>
+        <input type="number" id="bill-amount" placeholder="Bill Amount">
+        <input type="date" id="bill-due-date" placeholder="Due Date">
+        <button class="btn-add" onclick="addBill()">Add Bill</button>
+    </div>
+
+    <div class="bills-section">
+        <h2>My Bills</h2>
+        <div id="bills-list"></div>
+    </div>
+
+    <div class="wallet-section">
+        <h2>Wallet Balance</h2>
+        <div class="wallet-balance">₹<span id="wallet-balance">0</span></div>
+        <input type="number" id="add-money" placeholder="Add Money">
+        <button class="btn-add" onclick="addMoney()">Add Money</button>
+    </div>
+
+    <!-- New Settings Section -->
+    <div class="settings-section">
+        <h2>Settings</h2>
+        <button onclick="toggleProfileManagement()">Profile Management</button>
+        <button onclick="toggleNotifications()">Notification Preferences</button>
+        <button onclick="toggleSecurity()">Security Settings</button>
+        <button onclick="toggleTheme()">Dark/Light Mode</button>
+    </div>
+
+    <!-- New Payments Section -->
+    <div class="payments-section">
+        <h2>Payments</h2>
+        <button onclick="showPaymentHistory()">View Payment History</button>
+        <button onclick="toggleScheduledPayments()">Scheduled Payments</button>
+        <button onclick="managePaymentMethods()">Manage Payment Methods</button>
+    </div>
+</div>
+
+<footer>
+    © 2023 Automated Bill Payments. All rights reserved.
+</footer>
+
+<script>
+    // Check if the user is logged in by checking localStorage for 'email' and 'password'
+    const email = localStorage.getItem('email');
+    const password = localStorage.getItem('password');
+
+    if (!email || !password) {
+        alert('You are not logged in. Please log in first.');
+        window.location.href = 'login.html'; // Redirect to login page if not authenticated
+    }
+
+    const hamburger = document.getElementById('hamburger');
+    const menu = document.getElementById('menu');
+
+    hamburger.addEventListener('click', () => {
+        menu.classList.toggle('open');
+    });
+
+    const billsList = document.getElementById('bills-list');
+    const walletBalanceEl = document.getElementById('wallet-balance');
+
+    let bills = [];
+    let walletBalance = 0;
+
+    function addBill() {
+        const billType = document.getElementById('bill-type').value;
+        const billAmount = document.getElementById('bill-amount').value;
+        const billDueDate = document.getElementById('bill-due-date').value;
+
+        if (billType && billAmount && billDueDate) {
+            bills.push({ type: billType, amount: parseFloat(billAmount), dueDate: billDueDate });
+            updateBillsList();
+        } else {
+            alert('Please fill all fields!');
+        }
+    }
+
+    function updateBillsList() {
+        billsList.innerHTML = '';
+        bills.forEach((bill, index) => {
+            const billItem = document.createElement('div');
+            billItem.classList.add('bill-item');
+            billItem.innerHTML = `
+                ${bill.type} - ₹${bill.amount} - Due: ${bill.dueDate}
+                <button onclick="payBill(${index})">Pay</button>
+            `;
+            billsList.appendChild(billItem);
+        });
+    }
+
+    function payBill(index) {
+        if (walletBalance >= bills[index].amount) {
+            walletBalance -= bills[index].amount;
+            walletBalanceEl.innerText = walletBalance;
+            alert(`Paid ₹${bills[index].amount} for ${bills[index].type}`);
+            bills.splice(index, 1); // Remove bill after payment
+            updateBillsList();
+        } else {
+            alert('Insufficient wallet balance!');
+        }
+    }
+
+    function addMoney() {
+        const addMoneyInput = document.getElementById('add-money').value;
+        if (addMoneyInput) {
+            walletBalance += parseFloat(addMoneyInput);
+            walletBalanceEl.innerText = walletBalance;
+            document.getElementById('add-money').value = ''; // Clear input
+        } else {
+            alert('Please enter an amount to add!');
+        }
+    }
+
+    function goToProfile() {
+        // Redirect to the profile page
+        window.location.href = 'profile.html'; // Change this to your profile page
+    }
+
+    function toggleProfileManagement() {
+        alert('Profile management options coming soon!');
+    }
+
+    function toggleNotifications() {
+        alert('Manage your notification settings here!');
+    }
+
+    function toggleSecurity() {
+        alert('Security settings management coming soon!');
+    }
+
+    function toggleTheme() {
+        document.body.classList.toggle('light-mode');
+        alert('Switched theme!');
+    }
+
+    function showPaymentHistory() {
+        alert('Displaying payment history...');
+    }
+
+    function toggleScheduledPayments() {
+        alert('Scheduled payments management coming soon!');
+    }
+
+    function managePaymentMethods() {
+        alert('Manage your saved payment methods here!');
+    }
+</script>
+
+</body>
+</html>

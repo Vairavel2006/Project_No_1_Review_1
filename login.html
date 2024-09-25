@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #2b2d42; /* Dark background to match the main app theme */
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background-color: #1b4332; /* Dark green to match the wallet section */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 320px;
+        }
+
+        h1 {
+            color: #ffba08; /* Highlight color for headings */
+            margin-bottom: 20px;
+            font-size: 26px;
+        }
+
+        input {
+            display: block;
+            margin: 10px auto;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            width: 80%;
+            background: #f4a261; /* Light orange to match the bills section */
+            color: #333;
+            font-size: 16px;
+        }
+
+        input::placeholder {
+            color: #333;
+        }
+
+        button {
+            background-color: #9d0208; /* Matching button color from the main app */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #d00000; /* Darker shade on hover */
+            transform: scale(1.05);
+        }
+
+        p {
+            margin-top: 10px;
+            color: #ddd;
+        }
+
+        a {
+            color: #ffba08; /* Link color matching heading highlights */
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Login</h1>
+        <input type="email" id="login-email" placeholder="Enter email" required>
+        <input type="password" id="login-password" placeholder="Enter password" required>
+        <button id="login-btn">Login</button>
+        <p>Don't have an account? <a href="signup.html">Sign up here</a></p>
+    </div>
+
+    <script>
+        const loginBtn = document.getElementById('login-btn');
+
+        loginBtn.addEventListener('click', () => {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            const storedEmail = localStorage.getItem('email');
+            const storedPassword = localStorage.getItem('password');
+
+            if (email === storedEmail && password === storedPassword) {
+                alert('Login successful!');
+                window.location.href = 'index.html'; // Redirect to dashboard
+            } else {
+                alert('Incorrect email or password.');
+            }
+        });
+    </script>
+</body>
+</html>

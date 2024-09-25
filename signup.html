@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #2b2d42; /* Dark background to maintain consistency */
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .signup-container {
+            background-color: #1b4332; /* Dark green to match the profile and login themes */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 320px;
+        }
+
+        h1 {
+            color: #ffba08; /* Highlight color matching other pages */
+            margin-bottom: 20px;
+            font-size: 26px;
+        }
+
+        input {
+            display: block;
+            margin: 10px auto;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            width: 80%;
+            background: #f4a261; /* Light orange to keep the consistency */
+            color: #333;
+            font-size: 16px;
+        }
+
+        input::placeholder {
+            color: #333;
+        }
+
+        button {
+            background-color: #9d0208; /* Button color consistent with the main theme */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #d00000; /* Slightly darker shade for hover effect */
+            transform: scale(1.05);
+        }
+
+        p {
+            margin-top: 10px;
+            color: #ddd;
+        }
+
+        a {
+            color: #ffba08; /* Consistent link color with other sections */
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <h1>Sign Up</h1>
+        <input type="text" id="signup-username" placeholder="Enter username" required>
+        <input type="email" id="signup-email" placeholder="Enter email" required>
+        <input type="password" id="signup-password" placeholder="Enter password" required>
+        <button id="signup-btn">Sign Up</button>
+        <p>Already have an account? <a href="login.html">Login here</a></p>
+    </div>
+
+    <script>
+        const signupBtn = document.getElementById('signup-btn');
+
+        signupBtn.addEventListener('click', () => {
+            const username = document.getElementById('signup-username').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+
+            if (username && email && password) {
+                // Save user details to localStorage
+                localStorage.setItem('username', username);
+                localStorage.setItem('email', email);
+                localStorage.setItem('password', password);
+
+                // Redirect to login page
+                alert('Account created successfully! Please log in.');
+                window.location.href = 'login.html';
+            } else {
+                alert('Please fill in all fields.');
+            }
+        });
+    </script>
+</body>
+</html>
